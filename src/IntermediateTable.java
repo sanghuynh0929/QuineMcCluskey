@@ -3,7 +3,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class IntermediateTable {
+class IntermediateTable {
     private Set<Implicant> implicants;
     private List<Set<Implicant>> groups;
     private Set<Implicant> primeImplicants;
@@ -78,20 +78,23 @@ public class IntermediateTable {
             for (Implicant impl : nextImplicants) {
                 minterms.addAll(impl.getMinterms());
             }
-            System.err.println(minterms);
+//            System.err.println(minterms);
             for (Implicant implicant : implicants) {
-                System.err.println(implicant);
                 for (int mt : implicant.getMinterms()) {
                     if (!minterms.contains(mt)) {
                         primeImplicants.add(implicant);
                     }
                 }
             }
-            printTable();
+//            printTable();
             implicants = nextImplicants;
             groups.clear();
             constructGroups();
         } while (combined);
+    }
+
+    public Set<Implicant> getPrimeImplicants() {
+        return primeImplicants;
     }
 
     public static void main(String[] args) {
