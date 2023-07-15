@@ -2,7 +2,7 @@ import java.util.*;
 
 public class QuineMcCluskey {
     private IntermediateTable intermediateTable;
-
+    private List<Implicant> primeImplicants;
     public QuineMcCluskey(List<Integer> minterms) {
         Set<Implicant> impl = new HashSet<>();
         for (int mt : minterms) {
@@ -11,14 +11,16 @@ public class QuineMcCluskey {
         intermediateTable = new IntermediateTable(impl);
         Set<Implicant> primeImplicants = intermediateTable.getPrimeImplicants();
         Set<Implicant> essentialPrimeImplicants = getEssentialPrimeImplicants(primeImplicants);
-        System.out.println(essentialPrimeImplicants);
+
+        System.err.println(essentialPrimeImplicants);
         List<Implicant> nonessentialPrimeImplicant = new ArrayList<>(primeImplicants);
         nonessentialPrimeImplicant.removeAll(essentialPrimeImplicants);
         Set<Integer> uncovered = new HashSet<>(minterms);
         for (Implicant imp : essentialPrimeImplicants)
             uncovered.removeAll(imp.getMinterms());
-        System.out.println(uncovered);
-        System.out.println(nonessentialPrimeImplicant);
+
+        System.err.println(uncovered);
+        System.err.println(nonessentialPrimeImplicant);
         int result = 0;
         outer:
         for (int i = 1; i <= nonessentialPrimeImplicant.size(); i++) {
@@ -39,7 +41,9 @@ public class QuineMcCluskey {
                 finalPrimeImplicants.add(imp);
             }
         }
-        System.out.println(finalPrimeImplicants);
+        finalPrimeImplicants.addAll(essentialPrimeImplicants);
+        this.primeImplicants = finalPrimeImplicants;
+
     }
 
     private boolean checkCoverage(List<Implicant> implicants, int mask, Set<Integer> uncovered) {
@@ -87,8 +91,12 @@ public class QuineMcCluskey {
         }
         return essentialPI;
     }
+    public List<Implicant> getPrimeImplicants() {
+        return new ArrayList<>(primeImplicants);
+    }
 
     public static void main(String[] args) {
         QuineMcCluskey qm = new QuineMcCluskey(Arrays.asList(0,1,2,5,6,7));
+        System.out.println(qm.getPrimeImplicants());
     }
 }
