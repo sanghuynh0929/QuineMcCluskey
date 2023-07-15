@@ -96,7 +96,7 @@ public class QuineMcCluskey {
     }
 
     public static void main(String[] args) {
-        QuineMcCluskey qm = new QuineMcCluskey(Arrays.asList(0,1,2,5,6,7));
+        QuineMcCluskey qm = new QuineMcCluskey(Arrays.asList(1, 3, 6, 7, 9, 10, 12, 13, 14, 15));
         System.out.println(qm.getPrimeImplicants());
     }
 }
